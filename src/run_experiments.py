@@ -141,8 +141,6 @@ def spike_variability_run(
 
     return cvs, spike_counts
 
-
-# UNDER DEVELOPMENT
 def refractory_run(
     model_func,
     model_name,
@@ -254,30 +252,30 @@ def main():
     pulse_width = pulse_width_lif
     deltas = deltas_lif
 
-    # fI_curve(
-    #     model_func=model_func,
-    #     model_name=model_name,
-    #     model_params=model_params,
-    #     T=T,
-    #     dt=dt,
-    #     t_on=t_on,
-    #     t_off=t_off,
-    #     currents=currents,
-    # )
+    fI_curve(
+        model_func=model_func,
+        model_name=model_name,
+        model_params=model_params,
+        T=T,
+        dt=dt,
+        t_on=t_on,
+        t_off=t_off,
+        currents=currents,
+    )
 
     # # may take a while for the HH model
-    # spike_variability_run(
-    #     model_func=model_func,
-    #     model_name=model_name,
-    #     model_params=model_params,
-    #     T=T,
-    #     dt=dt,
-    #     t_on=t_on,
-    #     t_off=t_off,
-    #     amp=amp,
-    #     sigma=sigma,
-    #     n_trials=25,
-    # )
+    spike_variability_run(
+        model_func=model_func,
+        model_name=model_name,
+        model_params=model_params,
+        T=T,
+        dt=dt,
+        t_on=t_on,
+        t_off=t_off,
+        amp=amp,
+        sigma=sigma,
+        n_trials=25,
+    )
 
     refractory_run(
         model_func=model_func,

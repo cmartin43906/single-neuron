@@ -17,7 +17,7 @@ To switch the model that is being used in run_experiments.py, open this file and
 
 Current parameter 'amp' can be manually manipulated in run_experiments.py, test_hh.py, and test_lif.py to simulate subthreshold and suprathreshold current application, and is marked by comment # CAN MANIPULATE CURRENT. Noisy current is utilized specifically in the spike_variability_run experiment.
 
-run_experiments.py can run experiments to generate f-I curves and measure spike-variability using CV values. A specific test for refractory behavior is under development, but refractory behavior can be inferred from f-I curves currently.
+run_experiments.py can run experiments to generate f-I curves, measure spike-variability using CV values, and visualize refractory behavior. The user may run each test in succession, or comment out function calls at the end of run_experiments.py to run certain tests in isolation.
 
 test_hh.py will generate the spike waveforms produced by the Hodkin-Huxley model under the parameters specified in the file, and test_lif.py will generate a plot of LIF analagous spike-events.
 
