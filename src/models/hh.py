@@ -32,6 +32,7 @@ def sim_hh(
     I_in = I_func
 
     # parameterization of Hodgkin-Huxley 1952 eqs
+    # these use voltage directly, where Gerstner shifts u=v-V_rest
     eqs = Equations("""
         I = I_in(t) : amp
         dv/dt = (I - (gNa * m ** 3 * h * (v - ENa)) - (gK * n ** 4 * (v - EK)) - (gL * (v - EL))) / C_m : volt

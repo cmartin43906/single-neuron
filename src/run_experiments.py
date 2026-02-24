@@ -5,8 +5,7 @@ prefs.codegen.target = "numpy"
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-from brian2 import ms, mV, nA, Mohm, second, uF, mS, nA, umetre, ufarad, cm, msiemens
-
+from brian2 import ms, mV, nA, Mohm, second, uF, nA, umetre, cm, msiemens
 
 from src.protocols import step_current, noisy_step_current, two_pulse_current
 from src.models.lif import sim_lif
@@ -160,6 +159,7 @@ def refractory_run(
     if detect_t is None:
         detect_t = pulse_width + 20 * ms  # give it a bit of time
 
+    # contains num spikes that occured during each delta
     p2_spike = []
 
     # provides a number of currents where the spikes vary in distance from each other, to test when the second spike will or will not occur based on refractory behavior of the model
@@ -181,7 +181,7 @@ def refractory_run(
     plt.xlabel("Inter-pulse interval Δ (ms)")
     plt.ylabel("# of Spikes produced in pulse window")
     plt.title(f"{model_name} refractory recovery")
-    plt.ylim(-0.1, 2)
+    plt.ylim(-0.1, 3)
     plt.tight_layout()
     plt.show()
 
@@ -199,19 +199,20 @@ def main():
 
     t1_on = 20 * ms
 
+    # delays for refractory runs, can change
     deltas_hh = np.arange(1, 15, 1) * ms
-    deltas_lif = np.arange(1, 31, 1) * ms
+    deltas_lif = np.arange(1, 15, 1) * ms
 
     # generates 12 input levels from 0nA to 0.6nA
     currents_hh = np.linspace(0.0, 6.0, 12) * nA
     currents_lif = np.linspace(0.0, 0.6, 12) * nA
 
     # CAN MANIPULATE
-    amp_lif = 0.3 * nA  # 0.3
+    amp_lif = 0.8 * nA  # 0.3 is good for variability test
     amp_hh = 3.0 * nA
-    sigma_lif = amp_lif * 0.1  # 0.10 * nA
-    sigma_hh = amp_hh * 0.1  # 1.0 * nA
-    pulse_width_lif = 15 * ms
+    sigma_lif = amp_lif * 0.1
+    sigma_hh = amp_hh * 0.1
+    pulse_width_lif = 3 * ms
     pulse_width_hh = 2 * ms
 
     lif_params = {
@@ -253,43 +254,43 @@ def main():
     pulse_width = pulse_width_lif
     deltas = deltas_lif
 
-    fI_curve(
-        model_func=model_func,
-        model_name=model_name,
-        model_params=model_params,
-        T=T,
-        dt=dt,
-        t_on=t_on,
-        t_off=t_off,
-        currents=currents,
-    )
-
-    # may take a while for the HH model
-    spike_variability_run(
-        model_func=model_func,
-        model_name=model_name,
-        model_params=model_params,
-        T=T,
-        dt=dt,
-        t_on=t_on,
-        t_off=t_off,
-        amp=amp,
-        sigma=sigma,
-        n_trials=25,
-    )
-
-    # refractory_run(
+    # fI_curve(
     #     model_func=model_func,
     #     model_name=model_name,
     #     model_params=model_params,
     #     T=T,
     #     dt=dt,
-    #     amp=amp,
-    #     t1_on=t1_on,
-    #     pulse_width=pulse_width,
-    #     deltas=deltas,
-    #     detect_t=10 * ms,
+    #     t_on=t_on,
+    #     t_off=t_off,
+    #     currents=currents,
     # )
+
+    # # may take a while for the HH model
+    # spike_variability_run(
+    #     model_func=model_func,
+    #     model_name=model_name,
+    #     model_params=model_params,
+    #     T=T,
+    #     dt=dt,
+    #     t_on=t_on,
+    #     t_off=t_off,
+    #     amp=amp,
+    #     sigma=sigma,
+    #     n_trials=25,
+    # )
+
+    refractory_run(
+        model_func=model_func,
+        model_name=model_name,
+        model_params=model_params,
+        T=T,
+        dt=dt,
+        amp=amp,
+        t1_on=t1_on,
+        pulse_width=pulse_width,
+        deltas=deltas,
+        detect_t=10 * ms,
+    )
 
 
 if __name__ == "__main__":

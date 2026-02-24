@@ -68,13 +68,14 @@ def noisy_step_current(T, dt, amp, t_on, t_off, sigma, seed=None):
 
 # helps determine refractory behavior
 # generates two current pulses with a determined width that are delta ms apart
-def two_pulse_current(T, dt, amp, t1_on, pulse_width, delta, sigma=0 * amp, seed=None):
+def two_pulse_current(T, dt, amp, t1_on, pulse_width, delta):
     num_steps = int(np.round(T / dt))
     I = np.zeros(num_steps) * amp
     t = np.arange(num_steps) * dt
 
-    t2_on = t1_on + delta
+    t2_on = t1_on + pulse_width + delta
 
+    # boolean masks over time samples
     p1 = (t >= t1_on) & (t < t1_on + pulse_width)
     p2 = (t >= t2_on) & (t < t2_on + pulse_width)
 

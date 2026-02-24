@@ -32,4 +32,7 @@ print("num spikes:", result.num_spikes)
 
 plt.plot(result.t_ms, result.V_mV)
 plt.axhline(-50, linestyle="--")
+plt.xlabel("Time (ms)")
+plt.ylabel("V (mV)")
+plt.title("LIF membrane voltage")
 plt.show()
